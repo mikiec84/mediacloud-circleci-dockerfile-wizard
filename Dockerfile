@@ -25,15 +25,10 @@ RUN \
     pip3 install --upgrade ansible && \
     rm -rf /root/.cache/ && \
     \
-    # FIXME "mediacloud" user is not being used
-    useradd -ms /bin/bash mediacloud && \
-    echo 'mediacloud ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/99_mediacloud && \
-    \
-    mkdir /home/mediacloud/mediacloud/ && \
-    mv /mediacloud-ansible /home/mediacloud/mediacloud/ansible/ && \
-    chown -R mediacloud:mediacloud /home/mediacloud/mediacloud/
+    mkdir /root/mediacloud/ && \
+    mv /mediacloud-ansible /root/mediacloud/ansible/
 
-WORKDIR /home/mediacloud
+WORKDIR /root
 
 RUN \
     cd mediacloud/ansible/ && \
@@ -43,8 +38,7 @@ RUN \
     --connection=local \
     -vvv travis.yml && \
     \
-    rm -rf /home/mediacloud/mediacloud/ && \
-    rm -rf /home/mediacloud/.cache/ && \
-    rm -rf /home/mediacloud/.cpanm/ && \
+    rm -rf /root/mediacloud/ && \
     rm -rf /root/.cache/ && \
+    rm -rf /root/.cpanm/ && \
     apt-get -y clean
